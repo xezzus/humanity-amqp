@@ -1,5 +1,5 @@
 <?php
-namespace amqp;
+namespace humanity\amqp;
 
 class Connection
 {
@@ -8,24 +8,20 @@ class Connection
     public $password;
     public $port;
     public $vhost = '/';
-    private $amqpConnection;
     private $amqpChannel;
 
-    public function getAmqpConnection()
-    {
-        if ($this->amqpConnection === null) {
-            $this->amqpConnection = new \AMQPConnection();
-            $this->amqpConnection->setLogin($this->login);
-            $this->amqpConnection->setPassword($this->password);
-            $this->amqpConnection->setVhost($this->vhost);
-            $this->amqpConnection->connect();
-            $this->amqpChannel = New \AMQPChannel($this->amqpConnection);
-        }
+    public function __construct($host,$port,$login,$password,$vhost='/'){
+        $this->amqpConnection = new \AMQPConnection();
+        $this->amqpConnection->setHost($host);
+        $this->amqpConnection->setLogin($login);
+        $this->amqpConnection->setPassword($password);
+        $this->amqpConnection->setVhost($vhost);
+        $this->amqpConnection->connect();
+        $this->amqpChannel = New \AMQPChannel($this->amqpConnection);
     }
 
     public function exchange($name)
     {
-        $this->getAmqpConnection();
         return new Message($this->amqpConnection, $this->amqpChannel, $name);
     }
 

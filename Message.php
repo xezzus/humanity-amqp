@@ -1,9 +1,7 @@
 <?php
-namespace amqpim;
+namespace humanity\amqp;
 
-use yii\base\component;
-
-class Message extends Component
+class Message
 {
 
     private $amqpConnection;
@@ -17,11 +15,11 @@ class Message extends Component
         $this->name = $name;
     }
 
-    public function send($msg)
+    public function send($msg,$routingKey=null)
     {
         $ex = new \AMQPExchange($this->amqpChannel);
         $ex->setName($this->name);
-        $ex->publish($msg);
+        $ex->publish($msg,$routingKey);
         return $this;
     }
 

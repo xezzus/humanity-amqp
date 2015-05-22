@@ -1,5 +1,5 @@
 <?php
-namespace amqpim;
+namespace humanity\amqp;
 
 class MessageTakeControl
 {
